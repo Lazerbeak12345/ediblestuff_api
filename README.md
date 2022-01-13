@@ -46,4 +46,4 @@ Copyright 2021-2 Lazerbeak12345
 
 ### Licence
 
-Due to the dependancy on instant_ores, this mod _must_ be gpl 3 or later compatible. Thus, this mod is under GPL 3.0 or later.
+GPL-3 or later
