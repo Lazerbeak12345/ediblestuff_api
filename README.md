@@ -1,5 +1,7 @@
 # The Edible Stuff API Mod
 
+[![ContentDB](https://content.minetest.net/packages/lazerbeak12345/ediblestuff_api/shields/downloads/)](https://content.minetest.net/packages/lazerbeak12345/ediblestuff_api/)
+
 Adds an API to MineTest to easily register tools as edible - and to make
 specified armor get "eaten" automatically when hunger goes down.
 
