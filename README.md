@@ -26,6 +26,143 @@ Nothing! But it has optional integration with:
 - `3d_armor`
 	- If absent the armor apis do nothing.
 
+## API
+
+This mod provides a global variable `ediblestuff`. All public api is within this.
+
+### `ediblestuff.satiates` table
+
+Used to prevent need for calling `on_use` when calculating eating equipped armor.
+
+Key: item string
+
+Value: how much this item satiates.
+
+### `ediblestuff.make_thing_edible` function
+
+Use `minetest.override_item`, `ediblestuff.satiates`, and (if mod present) `hunger_ng.add_hunger_data` to mark the satiation of a given item.
+
+Arguments:
+
+- `item` item string
+- `amount` number - amount the thing satiates (used as argument for `minetest.item_eat`)
+
+### `ediblestuff.make_things_edible` function
+
+Make a batch of things edible with a scale factor.
+
+Arguments:
+
+- `mod` string - name of mod for itemstring
+- `name` string - name of itemtype (see example)
+- `scale` number - multiply the tool amount by this before calling `ediblestuff.make_thing_edible`
+- `items` table - the items to make edible
+  - Key: string - the tool name
+  - Value: number - the tool amount
+
+```lua
+ediblestuff.make_things_edible("mod","name",3,{
+	tool=3,
+	another=1,
+})
+```
+
+Is the same as calling.
+
+```lua
+ediblestuff.make_thing_edible("mod:tool_name",9)
+ediblestuff.make_thing_edible("mod:another_name",3)
+```
+
+### `ediblestuff.make_tools_edible` function
+
+Mark a pick, shovel axe and sword as edible. The "tool amount" (see `ediblestuff.make_things_edible`) is equal to the number of element items in the crafting recipe.
+
+If farming is present this will also register a hoe as edible.
+
+Arguments:
+
+- `mod` string - name of mod for itemstring
+- `name` string - name of itemtype (see example)
+- `scale` number - multiply the tool amount by this before calling `ediblestuff.make_thing_edible`
+
+### `ediblestuff.make_armor_edible` function
+
+Mark helmet, chestplate, leggings and boots as edible. The "tool amount" (see `ediblestuff.make_things_edible`) is equal to the number of element items in the crafting recipe.
+
+If shields is present this will also register a shield as edible.
+
+Arguments:
+
+- `mod` string - name of mod for itemstring
+- `name` string - name of itemtype (see example)
+- `scale` number - multiply the tool amount by this before calling `ediblestuff.make_thing_edible`
+
+### `ediblestuff.make_armor_edible_while_wearing` function
+
+Calls `ediblestuff.make_armor_edible` with the same arguments but also registers all of those armor peices in `ediblestuff.edible_while_wearing`
+
+Arguments:
+
+- `mod` string - name of mod for itemstring
+- `name` string - name of itemtype (see example)
+- `scale` number - multiply the tool amount by this before calling `ediblestuff.make_thing_edible`
+
+### `ediblestuff.get_max_hunger` function
+
+Generic function for getting max hunger. If a hunger mod is not present it will return the `hp_max` for that player. (min hunger is zero across all supported mods)
+
+Arguments:
+
+- `player` player object - the player in question (not all hunger mods have a standard max hunger)
+
+Returns a number - the amount of hunger.
+
+### `ediblestuff.get_hunger` function
+
+Generic function for getting current hunger. If a hunger mod is not present it will return `get_hp` for that player.
+
+Arguments:
+
+- `player` player object - the player in question
+
+Returns a number - the amount of hunger. (keep in mind that this number's meaning is different across mods. use `ediblestuff.get_max_hunger` to mathmatically make up for that difference)
+
+### `ediblestuff.alter_hunger` function
+
+Generic function for getting current hunger. If a hunger mod is not present it will change HP.
+
+Arguments:
+
+- `player` player object - the player in question
+- `amount` number - the amount to change the hunger by (positive makes them less hungry. See note about return value in `ediblestuff.get_hunger`)
+
+Returns a number - the amount of hunger.
+
+### `ediblestuff.equipped` dict
+
+A dictionary of all players known to be wearing armor registered in the `ediblestuff.edible_while_wearing` dictionary.
+
+Updated automatically on these conditions:
+
+- A player joins
+- A player leaves (or times out)
+- A player equips armor
+- A player unequips armor
+- A player's armor is destroyed
+
+Keys: string - a player name
+
+Value: true
+
+### `ediblestuff.edible_while_wearing` dict
+
+A dictionary of armor items that, when equipped, a player will eat from automatically, given they are hungry enough.
+
+Keys: string - item name
+
+Value: true
+
 ## TODO
 
 - [ ] Upstream bug in 3d_armor with `get_weared_armor_elements`
@@ -33,6 +170,7 @@ Nothing! But it has optional integration with:
   - Doesn't seem possible. Can't tell MT engine to eat the tool but not use tool (except hoe, which is a type defined in farming)
 - [ ] delete functions after mods loaded (using event - not timer)
 - [ ] Settings?
+- [ ] Prevent race-condidtions when setting `on_use` in `override_item`
 
 ## Legal
 
