@@ -150,6 +150,9 @@ if minetest.get_modpath("3d_armor") ~= nil then
 	armor:register_on_equip(armor_check_event)
 	armor:register_on_unequip(armor_check_event)
 	armor:register_on_destroy(armor_check_event)
+	minetest.register_on_leaveplayer(function(player)
+		ediblestuff.equipped[player:get_player_name()] = nil
+	end)
 	minetest.register_globalstep(function()
 		-- Instead of iterating over every player, only iterate over players we know have ediblestuff equipped
 		for pname,_ in pairs(ediblestuff.equipped) do
