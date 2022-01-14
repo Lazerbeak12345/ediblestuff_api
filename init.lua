@@ -18,6 +18,42 @@ ediblestuff.make_things_edible = function(mod,name,scale,items)
 		ediblestuff.make_thing_edible(mod..":"..typ.."_"..name,scale*amount)
 	end
 end
+ediblestuff.make_tools_edible = function (mod,name,scale)
+	ediblestuff.make_things_edible(mod,name,scale,{
+		pick=3,
+		shovel=1,
+		axe=3,
+		sword=2,
+	})
+	if minetest.get_modpath("farming") then
+		ediblestuff.make_thing_edible(mod..":hoe_"..name,scale*2)
+	end
+end
+ediblestuff.make_armor_edible = function(mod,name,scale)
+	ediblestuff.make_things_edible(mod,name,scale,{
+		helmet=5,
+		chestplate=8,
+		leggings=7,
+		boots=4,
+	})
+	if minetest.get_modpath("shields") ~= nil then
+		ediblestuff.make_thing_edible(mod..":shield_"..name,scale*7)
+	end
+end
+ediblestuff.make_armor_edible_while_wearing = function (mod,name,scale)
+	ediblestuff.make_armor_edible(mod,name,scale)
+	for _,typ in pairs({
+		"helmet",
+		"chestplate",
+		"leggings",
+		"boots"
+	}) do
+		ediblestuff.edible_while_wearing[mod..":"..typ.."_"..name] = true
+	end
+	if minetest.get_modpath("shields") ~= nil then
+		ediblestuff.edible_while_wearing[mod..":shield_"..name] = true
+	end
+end
 if minetest.get_modpath("stamina") then
 	if stamina.settings ~= nil then
 		-- For minetest-mods/stamina
