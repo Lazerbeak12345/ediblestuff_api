@@ -13,6 +13,8 @@ This mod was created for the [`chocolatestuff`][cs] mod, and so you can make you
 
 [cs]: https://github.com/Lazerbeak12345/chocolatestuff
 
+> This mod only provides the api to register a tool as edible.
+
 ## Requires
 
 Nothing! But it has optional integration with:
@@ -76,6 +78,8 @@ ediblestuff.make_thing_edible("mod:another_name",3)
 
 ### `ediblestuff.make_tools_edible` function
 
+> New in 1.1
+
 Mark a pick, shovel axe and sword as edible. The "tool amount" (see `ediblestuff.make_things_edible`) is equal to the number of element items in the crafting recipe.
 
 If farming is present this will also register a hoe as edible.
@@ -88,6 +92,8 @@ Arguments:
 
 ### `ediblestuff.make_armor_edible` function
 
+> New in 1.1
+
 Mark helmet, chestplate, leggings and boots as edible. The "tool amount" (see `ediblestuff.make_things_edible`) is equal to the number of element items in the crafting recipe.
 
 If shields is present this will also register a shield as edible.
@@ -99,6 +105,8 @@ Arguments:
 - `scale` number - multiply the tool amount by this before calling `ediblestuff.make_thing_edible`
 
 ### `ediblestuff.make_armor_edible_while_wearing` function
+
+> New in 1.1
 
 Calls `ediblestuff.make_armor_edible` with the same arguments but also registers all of those armor peices in `ediblestuff.edible_while_wearing`
 
