@@ -27,6 +27,7 @@ Nothing! But it has optional integration with:
 - `hunger_ng`
 - `3d_armor`
 	- If absent the armor apis do nothing.
+- `shields`
 
 ## API
 
