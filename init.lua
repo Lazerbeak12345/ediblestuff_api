@@ -157,10 +157,11 @@ if minetest.get_modpath("3d_armor") ~= nil then
 		-- Instead of iterating over every player, only iterate over players we know have ediblestuff equipped
 		for pname,_ in pairs(ediblestuff.equipped) do
 			local player=minetest.get_player_by_name(pname)
-			local n, armor_inv = armor:get_valid_player(player,"[chocolatestuff register_globalstep]")
+			local n, armor_inv = armor:get_valid_player(player,"[ediblestuff register_globalstep]")
 			if n then
 				local hunger_max = ediblestuff.get_max_hunger(player)
-				local hunger_ratio = (hunger_max - ediblestuff.get_hunger(player))/hunger_max
+				local hunger_availabile = hunger_max - ediblestuff.get_hunger(player)
+				local hunger_ratio = hunger_availabile/hunger_max
 				if hunger_ratio >= .15 then -- TODO make this a setting
 					local inv_list = armor_inv:get_list("armor")
 					local list = {}
@@ -175,9 +176,15 @@ if minetest.get_modpath("3d_armor") ~= nil then
 					local durability_ratio = (armor_max - victim_armor:get_wear())/armor_max
 					local item_satiates = ediblestuff.satiates[victim_armor:get_name()]
 					if not item_satiates then
-						item_satiates = hunger_max
+						minetest.log("warn","ediblestuff: "..victim_armor:get_name().." is not in ediblestuff.satiates. Assuming max.")
+						item_satiates = hunger_availabile
 					end
-					local possible_satiation = math.min(hunger_ratio,durability_ratio)
+					local item_ratio = 1
+					if item_satiates > hunger_availabile then
+						-- They can't eat it all even if they wanted to. Scale it so they can eat just a part of it.
+						item_ratio = hunger_availabile/item_satiates
+					end
+					local possible_satiation = math.min(hunger_ratio,durability_ratio*item_ratio)
 					ediblestuff.alter_hunger(player,possible_satiation*item_satiates)
 					armor:damage(player,index,victim_armor,possible_satiation*armor_max)
 					minetest.chat_send_player(pname,"You ate "..math.ceil(possible_satiation*100).."% of your equipped "..victim_armor:get_short_description())
