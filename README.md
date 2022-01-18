@@ -189,7 +189,9 @@ Copyright 2021-2 Lazerbeak12345
 
 - The YourLand players for a bunch of questionable ideas for this questionable mod. Original idea was from "Bla."
 - The creator of [the obsidianstuff redo mod](https://github.com/OgelGames/obsidianstuff). This takes inspiration from that repo.
-- The creator [the edible swords mod][the_edible_swords_mod]. I took inspiration from this repo as well.
+- The creator of [the edible swords mod][the_edible_swords_mod]. I took inspiration from this repo as well.
+
+[the_edible_swords_mod]: https://content.minetest.net/packages/GamingAssociation39/edible_swords/
 
 ### Licence
 
