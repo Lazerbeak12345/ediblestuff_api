@@ -177,7 +177,6 @@ Value: true
 - [ ] Upstream bug in 3d_armor with `get_weared_armor_elements`
 - [ ] make a way to actually use the tool (shift? no shift?)
   - Doesn't seem possible. Can't tell MT engine to eat the tool but not use tool (except hoe, which is a type defined in farming)
-- [ ] delete functions after mods loaded (using event - not timer)
 - [ ] Settings?
 - [ ] Prevent race-condidtions when setting `on_use` in `override_item`
 

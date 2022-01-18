@@ -54,6 +54,15 @@ ediblestuff.make_armor_edible_while_wearing = function (mod,name,scale)
 		ediblestuff.edible_while_wearing[mod..":shield_"..name] = true
 	end
 end
+-- These functions all make calls to `minetest.override_item`, which should only
+-- be used at load-time, according to the MT API doc
+minetest.register_on_mods_loaded(function()
+	ediblestuff.make_thing_edible = nil
+	ediblestuff.make_things_edible = nil
+	ediblestuff.make_tools_edible = nil
+	ediblestuff.make_armor_edible = nil
+	ediblestuff.make_armor_edible_while_wearing = nil
+end)
 if minetest.get_modpath("stamina") then
 	if stamina.settings ~= nil then
 		-- For minetest-mods/stamina
