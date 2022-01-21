@@ -87,9 +87,9 @@ If farming is present this will also register a hoe as edible.
 
 Arguments:
 
-- `mod` string - name of mod for itemstring
-- `name` string - name of itemtype (see example)
-- `scale` number - multiply the tool amount by this before calling `ediblestuff.make_thing_edible`
+1. `mod` string - name of mod for itemstring
+2. `name` string - name of itemtype (see example)
+3. `scale` number - multiply the tool amount by this before calling `ediblestuff.make_thing_edible`
 
 ### `ediblestuff.make_armor_edible` function
 
@@ -101,9 +101,9 @@ If shields is present this will also register a shield as edible.
 
 Arguments:
 
-- `mod` string - name of mod for itemstring
-- `name` string - name of itemtype (see example)
-- `scale` number - multiply the tool amount by this before calling `ediblestuff.make_thing_edible`
+1. `mod` string - name of mod for itemstring
+2. `name` string - name of itemtype (see example)
+3. `scale` number - multiply the tool amount by this before calling `ediblestuff.make_thing_edible`
 
 ### `ediblestuff.make_armor_edible_while_wearing` function
 
@@ -113,9 +113,9 @@ Calls `ediblestuff.make_armor_edible` with the same arguments but also registers
 
 Arguments:
 
-- `mod` string - name of mod for itemstring
-- `name` string - name of itemtype (see example)
-- `scale` number - multiply the tool amount by this before calling `ediblestuff.make_thing_edible`
+1. `mod` string - name of mod for itemstring
+2. `name` string - name of itemtype (see example)
+3. `scale` number - multiply the tool amount by this before calling `ediblestuff.make_thing_edible`
 
 ### `ediblestuff.get_max_hunger` function
 
@@ -123,7 +123,7 @@ Generic function for getting max hunger. If a hunger mod is not present it will 
 
 Arguments:
 
-- `player` player object - the player in question (not all hunger mods have a standard max hunger)
+1. `player` player object - the player in question (not all hunger mods have a standard max hunger)
 
 Returns a number - the amount of hunger.
 
@@ -133,7 +133,7 @@ Generic function for getting current hunger. If a hunger mod is not present it w
 
 Arguments:
 
-- `player` player object - the player in question
+1. `player` player object - the player in question
 
 Returns a number - the amount of hunger. (keep in mind that this number's meaning is different across mods. use `ediblestuff.get_max_hunger` to mathmatically make up for that difference)
 
@@ -143,8 +143,8 @@ Generic function for getting current hunger. If a hunger mod is not present it w
 
 Arguments:
 
-- `player` player object - the player in question
-- `amount` number - the amount to change the hunger by (positive makes them less hungry. See note about return value in `ediblestuff.get_hunger`)
+1. `player` player object - the player in question
+2. `amount` number - the amount to change the hunger by (positive makes them less hungry. See note about return value in `ediblestuff.get_hunger`)
 
 ### `ediblestuff.equipped` dict
 
