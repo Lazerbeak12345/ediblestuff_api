@@ -146,8 +146,6 @@ Arguments:
 - `player` player object - the player in question
 - `amount` number - the amount to change the hunger by (positive makes them less hungry. See note about return value in `ediblestuff.get_hunger`)
 
-Returns a number - the amount of hunger.
-
 ### `ediblestuff.equipped` dict
 
 A dictionary of all players known to be wearing armor registered in the `ediblestuff.edible_while_wearing` dictionary.
