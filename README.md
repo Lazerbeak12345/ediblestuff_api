@@ -47,8 +47,8 @@ Use `minetest.override_item`, `ediblestuff.satiates`, and (if mod present) `hung
 
 Arguments:
 
-- `item` item string
-- `amount` number - amount the thing satiates (used as argument for `minetest.item_eat`)
+1. `item` item string
+2. `amount` number - amount the thing satiates (used as argument for `minetest.item_eat`)
 
 ### `ediblestuff.make_things_edible` function
 
@@ -56,10 +56,10 @@ Make a batch of things edible with a scale factor.
 
 Arguments:
 
-- `mod` string - name of mod for itemstring
-- `name` string - name of itemtype (see example)
-- `scale` number - multiply the tool amount by this before calling `ediblestuff.make_thing_edible`
-- `items` table - the items to make edible
+1. `mod` string - name of mod for itemstring
+2. `name` string - name of itemtype (see example)
+3. `scale` number - multiply the tool amount by this before calling `ediblestuff.make_thing_edible`
+4. `items` table - the items to make edible
   - Key: string - the tool name
   - Value: number - the tool amount
 
