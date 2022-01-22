@@ -167,7 +167,9 @@ if minetest.get_modpath("3d_armor") ~= nil then
 		for pname,_ in pairs(ediblestuff.equipped) do
 			local player=minetest.get_player_by_name(pname)
 			local n, armor_inv = armor:get_valid_player(player,"[ediblestuff register_globalstep]")
-			if n then
+			if not n then
+				ediblestuff.equipped[pname]=nil
+			else
 				local hunger_max = ediblestuff.get_max_hunger(player)
 				local hunger_availabile = hunger_max - ediblestuff.get_hunger(player)
 				local hunger_ratio = hunger_availabile/hunger_max
@@ -206,8 +208,6 @@ if minetest.get_modpath("3d_armor") ~= nil then
 						armor:set_player_armor(player)
 					end
 				end
-			else
-				ediblestuff.equipped[pname]=nil
 			end
 		end
 	end)
