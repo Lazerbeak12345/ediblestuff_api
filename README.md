@@ -60,8 +60,8 @@ Arguments:
 2. `name` string - name of itemtype (see example)
 3. `scale` number - multiply the tool amount by this before calling `ediblestuff.make_thing_edible`
 4. `items` table - the items to make edible
-  - Key: string - the tool name
-  - Value: number - the tool amount
+    - Key: string - the tool name
+    - Value: number - the tool amount
 
 ```lua
 ediblestuff.make_things_edible("mod","name",3,{
