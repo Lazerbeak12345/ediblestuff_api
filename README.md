@@ -63,6 +63,13 @@ Arguments:
     - Key: string - the tool name
     - Value: number - the tool amount
 
+Returns a table
+
+- Key: String itemname
+- Value: scaled tool amount (tool amount \* scale)
+
+> Return value was nil before version 1.2
+
 ```lua
 ediblestuff.make_things_edible("mod","name",3,{
 	tool=3,
@@ -90,6 +97,16 @@ Arguments:
 1. `mod` string - name of mod for itemstring
 2. `name` string - name of itemtype (see example)
 3. `scale` number - multiply the tool amount by this before calling `ediblestuff.make_thing_edible`
+4. Optional `is_flat_rate`. If `true` then the "tool amount" will be set to 1 for all tools. (Thus the satiation for all tools is equal to `scale`)
+
+> Argument 4 `is_flat_rate` is new in 1.2
+
+Returns a table
+
+- Key: String itemname
+- Value: scaled tool amount (tool amount \* scale)
+
+> Return value was nil before version 1.2
 
 ### `ediblestuff.make_armor_edible` function
 
@@ -104,6 +121,16 @@ Arguments:
 1. `mod` string - name of mod for itemstring
 2. `name` string - name of itemtype (see example)
 3. `scale` number - multiply the tool amount by this before calling `ediblestuff.make_thing_edible`
+4. Optional `is_flat_rate`. If `true` then the "tool amount" will be set to 1 for all tools. (Thus the satiation for all tools is equal to `scale`)
+
+> Argument 4 `is_flat_rate` is new in 1.2
+
+Returns a table
+
+- Key: String itemname
+- Value: scaled tool amount (tool amount \* scale)
+
+> Return value was nil before version 1.2
 
 ### `ediblestuff.make_armor_edible_while_wearing` function
 
@@ -116,6 +143,16 @@ Arguments:
 1. `mod` string - name of mod for itemstring
 2. `name` string - name of itemtype (see example)
 3. `scale` number - multiply the tool amount by this before calling `ediblestuff.make_thing_edible`
+4. Optional `is_flat_rate`. If `true` then the "tool amount" will be set to 1 for all tools. (Thus the satiation for all tools is equal to `scale`)
+
+> Argument 4 `is_flat_rate` is new in 1.2
+
+Returns a table
+
+- Key: String itemname
+- Value: scaled tool amount (tool amount \* scale)
+
+> Return value was nil before version 1.2
 
 ### `ediblestuff.get_max_hunger` function
 

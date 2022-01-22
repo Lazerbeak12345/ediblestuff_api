@@ -14,45 +14,54 @@ ediblestuff.make_thing_edible = function(item,amount)
 	end
 end
 ediblestuff.make_things_edible = function(mod,name,scale,items)
+	local result = {}
 	for typ,amount in pairs(items) do
-		ediblestuff.make_thing_edible(mod..":"..typ.."_"..name,scale*amount)
+		local scaled = scale*amount
+		result[typ]=scaled
+		ediblestuff.make_thing_edible(mod..":"..typ.."_"..name,scaled)
 	end
+	return result
 end
-ediblestuff.make_tools_edible = function (mod,name,scale)
-	ediblestuff.make_things_edible(mod,name,scale,{
+ediblestuff.make_tools_edible = function (mod,name,scale,is_flat_rate)
+	local numbers={
 		pick=3,
 		shovel=1,
 		axe=3,
 		sword=2,
-	})
-	if minetest.get_modpath("farming") then
-		ediblestuff.make_thing_edible(mod..":hoe_"..name,scale*2)
+	}
+	if minetest.get_modpath("farming") ~= nil then
+		numbers.hoe=2
 	end
+	if is_flat_rate == true then
+		for typ,_ in pairs(numbers) do
+			numbers[typ] = 1
+		end
+	end
+	return ediblestuff.make_things_edible(mod,name,scale,numbers)
 end
-ediblestuff.make_armor_edible = function(mod,name,scale)
-	ediblestuff.make_things_edible(mod,name,scale,{
+ediblestuff.make_armor_edible = function(mod,name,scale,is_flat_rate)
+	local numbers = {
 		helmet=5,
 		chestplate=8,
 		leggings=7,
 		boots=4,
-	})
+	}
 	if minetest.get_modpath("shields") ~= nil then
-		ediblestuff.make_thing_edible(mod..":shield_"..name,scale*7)
+		numbers.shield=7
 	end
+	if is_flat_rate == true then
+		for typ,_ in pairs(numbers) do
+			numbers[typ] = 1
+		end
+	end
+	return ediblestuff.make_things_edible(mod,name,scale,numbers)
 end
-ediblestuff.make_armor_edible_while_wearing = function (mod,name,scale)
-	ediblestuff.make_armor_edible(mod,name,scale)
-	for _,typ in pairs({
-		"helmet",
-		"chestplate",
-		"leggings",
-		"boots"
-	}) do
+ediblestuff.make_armor_edible_while_wearing = function (mod,name,scale,is_flat_rate)
+	local result = ediblestuff.make_armor_edible(mod,name,scale,is_flat_rate)
+	for typ,_ in pairs(result) do
 		ediblestuff.edible_while_wearing[mod..":"..typ.."_"..name] = true
 	end
-	if minetest.get_modpath("shields") ~= nil then
-		ediblestuff.edible_while_wearing[mod..":shield_"..name] = true
-	end
+	return result
 end
 -- These functions all make calls to `minetest.override_item`, which should only
 -- be used at load-time, according to the MT API doc
