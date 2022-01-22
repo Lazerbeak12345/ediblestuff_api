@@ -65,7 +65,7 @@ Arguments:
 
 Returns a table
 
-- Key: String itemname
+- Key: String item type
 - Value: scaled tool amount (tool amount \* scale)
 
 > Return value was nil before version 1.2
@@ -103,7 +103,7 @@ Arguments:
 
 Returns a table
 
-- Key: String itemname
+- Key: String item type
 - Value: scaled tool amount (tool amount \* scale)
 
 > Return value was nil before version 1.2
@@ -127,7 +127,7 @@ Arguments:
 
 Returns a table
 
-- Key: String itemname
+- Key: String item type
 - Value: scaled tool amount (tool amount \* scale)
 
 > Return value was nil before version 1.2
@@ -149,7 +149,7 @@ Arguments:
 
 Returns a table
 
-- Key: String itemname
+- Key: String item type
 - Value: scaled tool amount (tool amount \* scale)
 
 > Return value was nil before version 1.2
