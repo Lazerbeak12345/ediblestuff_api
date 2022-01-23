@@ -3,8 +3,14 @@ ediblestuff = {}
 -- This is only needed because calling on_use is much more expensive and might have side effects
 ediblestuff.satiates = {}
 ediblestuff.make_thing_edible = function(item,amount)
+	local item_eat
+	if minetest.get_modpath("diet") ~= nil then
+		item_eat=diet.item_eat(amount)
+	else
+		item_eat=minetest.item_eat(amount)
+	end
 	minetest.override_item(item, {
-		on_use = minetest.item_eat(amount),
+		on_use = item_eat
 	})
 	ediblestuff.satiates[item] = amount
 	if minetest.get_modpath("hunger_ng") ~= nil then
