@@ -214,6 +214,7 @@ Value: true
   - Doesn't seem possible. Can't tell MT engine to eat the tool but not use tool (except hoe, which is a type defined in farming)
 - [ ] Settings?
 - [ ] Prevent race-condidtions when setting `on_use` in `override_item`
+- [ ] Find specific oldest supported MT version
 
 ## Legal
 
