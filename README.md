@@ -28,6 +28,10 @@ Nothing! But it has optional integration with:
 - `3d_armor`
 	- If absent the armor apis do nothing.
 - `shields`
+- `hunger`
+- `hud`
+
+For all the above, this mod (currently) assumes you are on a fairly recent version of that mod.
 
 ## API
 
@@ -43,7 +47,7 @@ Value: how much this item satiates.
 
 ### `ediblestuff.make_thing_edible` function
 
-Use `minetest.override_item`, `ediblestuff.satiates`, and (if mod present) `hunger_ng.add_hunger_data` to mark the satiation of a given item.
+Use `minetest.override_item`, `ediblestuff.satiates`, and specific mod register functions (`hunger_ng`, `hunger`) to mark the satiation of a given item.
 
 Arguments:
 
