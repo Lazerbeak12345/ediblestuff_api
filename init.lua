@@ -115,6 +115,14 @@ elseif minetest.get_modpath("hbhunger") then
 		hbhunger.hunger[name] = math.min(ediblestuff.get_hunger(player)+amount,hbhunger.SAT_MAX)
 		hbhunger.set_hunger_raw(player)
 	end
+elseif minetest.get_modpath("mcl_hunger") then
+	ediblestuff.get_max_hunger = function ()
+		return 20
+	end
+	ediblestuff.get_hunger = mcl_hunger.get_hunger
+	ediblestuff.alter_hunger = function (player, amount)
+		mcl_hunger.set_hunger(player,ediblestuff.get_hunger(player)+amount)
+	end
 elseif minetest.get_modpath("hunger_ng") then
 	ediblestuff.get_max_hunger = function (player)
 		local info = hunger_ng.get_hunger_information(player:get_player_name())

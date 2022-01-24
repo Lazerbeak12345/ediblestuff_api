@@ -30,6 +30,7 @@ Nothing! But it has optional integration with:
 - `shields`
 - `hunger`
 - `hud`
+- `mcl_hunger`
 
 For all the above, this mod (currently) assumes you are on a fairly recent version of that mod.
 
