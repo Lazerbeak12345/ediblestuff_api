@@ -31,9 +31,7 @@ ediblestuff.make_tools_edible = function (mod,name,scale,is_flat_rate)
 		axe=3,
 		sword=2,
 	}
-	if minetest.get_modpath("farming") ~= nil then
-		numbers.hoe=2
-	end
+	if minetest.get_modpath("farming") ~= nil then numbers.hoe=2 end
 	if is_flat_rate == true then
 		for typ,_ in pairs(numbers) do
 			numbers[typ] = 1
@@ -227,7 +225,8 @@ minetest.register_globalstep(function()
 				local inv_list = armor_inv:get_list("armor")
 				local list = {}
 				for i,slot in ipairs(inv_list) do
-					if slot:get_count() > 0 then
+					-- Ensure that the armor can actually be eaten before we try to eat it.
+					if slot:get_count() > 0 and ediblestuff.satiates[slot:get_name()] then
 						list[#list+1] = {slot, i}
 					end
 				end
@@ -236,10 +235,6 @@ minetest.register_globalstep(function()
 				local armor_max = 65535 -- largest possible tool durability
 				local durability_ratio = (armor_max - victim_armor:get_wear())/armor_max
 				local item_satiates = ediblestuff.satiates[victim_armor:get_name()]
-				if not item_satiates then
-					minetest.log("warn","ediblestuff: "..victim_armor:get_name().." is not in ediblestuff.satiates. Assuming max.")
-					item_satiates = hunger_availabile
-				end
 				local item_ratio = 1
 				if item_satiates > hunger_availabile then
 					-- They can't eat it all even if they wanted to. Scale it so they can eat just a part of it.
