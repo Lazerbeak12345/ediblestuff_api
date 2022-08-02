@@ -40,6 +40,7 @@ ediblestuff.make_tools_edible = function (mod,name,scale,is_flat_rate)
 	return ediblestuff.make_things_edible(mod,name,scale,numbers)
 end
 ediblestuff.make_armor_edible = function(mod,name,scale,is_flat_rate)
+	if minetest.get_modpath("3d_armor") == nil then return {} end
 	local numbers = {
 		helmet=5,
 		chestplate=8,
