@@ -1,9 +1,13 @@
+local S = minetest.get_translator(minetest.get_current_modname())
+
 ediblestuff = {}
+ediblestuff.logcount = 0
+ediblestuff.logdelay = 5
+
 -- How much does an arbirary item satiate when equipped?
 -- This is only needed because calling on_use is much more expensive and might have side effects
 ediblestuff.satiates = {}
-ediblestuff.logcount = 0
-ediblestuff.logdelay = 5
+
 ediblestuff.make_thing_edible = function(item,amount)
 	minetest.override_item(item, {
 		on_use=minetest.item_eat(amount)
@@ -253,7 +257,7 @@ minetest.register_globalstep(function()
 				local possible_satiation = math.min(hunger_ratio,durability_ratio*item_ratio)
 				ediblestuff.alter_hunger(player,possible_satiation*item_satiates)
 				armor:damage(player,index,victim_armor,possible_satiation*armor_max)
-				minetest.chat_send_player(pname,"You ate "..math.ceil(possible_satiation*100).."% of your equipped "..victim_armor:get_short_description())
+				minetest.chat_send_player(pname,S("You ate @1% of your equipped @2", math.ceil(possible_satiation*100), victim_armor:get_short_description()))
 				if hunger_ratio >= durability_ratio then
 					local old_armor=ItemStack(victim_armor)
 					victim_armor:take_item()
