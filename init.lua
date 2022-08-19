@@ -3,6 +3,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 ediblestuff = {}
 ediblestuff.logcount = 0
 ediblestuff.logdelay = 5
+ediblestuff.hunger_threshold = minetest.settings:get("ediblestuff_api.hunger_threshold") or 0.5
 
 -- How much does an arbirary item satiate when equipped?
 -- This is only needed because calling on_use is much more expensive and might have side effects
@@ -235,7 +236,7 @@ minetest.register_globalstep(function()
 			local hunger_max = ediblestuff.get_max_hunger(player)
 			local hunger_availabile = hunger_max - ediblestuff.get_hunger(player)
 			local hunger_ratio = hunger_availabile/hunger_max
-			if hunger_ratio >= .15 then -- TODO make this a setting
+			if hunger_ratio >= ediblestuff.hunger_threshold then
 				local inv_list = armor_inv:get_list("armor")
 				local list = {}
 				for i,slot in ipairs(inv_list) do
