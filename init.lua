@@ -2,6 +2,8 @@ ediblestuff = {}
 -- How much does an arbirary item satiate when equipped?
 -- This is only needed because calling on_use is much more expensive and might have side effects
 ediblestuff.satiates = {}
+ediblestuff.logcount = 0
+ediblestuff.logdelay = 5
 ediblestuff.make_thing_edible = function(item,amount)
 	minetest.override_item(item, {
 		on_use=minetest.item_eat(amount)
@@ -175,8 +177,9 @@ ediblestuff.edible_while_wearing = {}
 if minetest.get_modpath("3d_armor") == nil then return end
 -- check if they have the armor equipped.
 local function armor_search(elms)
+	local eww = ediblestuff.edible_while_wearing
 	for _,elm in pairs(elms) do
-		if ediblestuff.edible_while_wearing[elm] then
+		if eww[elm] then
 			return true
 		end
 	end
@@ -188,8 +191,13 @@ local function delayed_armor_check(pname)
 		-- this can fail inside register_on_joinplayer.
 		local elms=armor:get_weared_armor_elements(player)
 		if elms == nil then
-			-- If it does fail, wait another second (it's possible to get into an infinite loop here...)
-			minetest.log("info", "ediblestuff: armor check was delayed...")
+			-- Prevent log flooding
+			if ediblestuff.logcount > ediblestuff.logdelay then
+				-- If it does fail, wait another second (it's possible to get into an infinite loop here...)
+				minetest.log("info", "ediblestuff: armor check was delayed...")
+				ediblestuff.logcount = 0
+			end
+			ediblestuff.logcount = ediblestuff.logcount + 1
 			minetest.after(1, delayed_armor_check(pname))
 			return
 		end
@@ -213,6 +221,7 @@ minetest.register_on_leaveplayer(function(player)
 end)
 minetest.register_globalstep(function()
 	-- Instead of iterating over every player, only iterate over players we know have ediblestuff equipped
+	local satiates = ediblestuff.satiates
 	for pname,_ in pairs(ediblestuff.equipped) do
 		local player=minetest.get_player_by_name(pname)
 		local n, armor_inv = armor:get_valid_player(player,"[ediblestuff register_globalstep]")
@@ -227,7 +236,7 @@ minetest.register_globalstep(function()
 				local list = {}
 				for i,slot in ipairs(inv_list) do
 					-- Ensure that the armor can actually be eaten before we try to eat it.
-					if slot:get_count() > 0 and ediblestuff.satiates[slot:get_name()] then
+					if slot:get_count() > 0 and satiates[slot:get_name()] then
 						list[#list+1] = {slot, i}
 					end
 				end
