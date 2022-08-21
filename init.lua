@@ -1,7 +1,14 @@
+local S = minetest.get_translator(minetest.get_current_modname())
+
 ediblestuff = {}
+ediblestuff.logcount = 0
+ediblestuff.logdelay = 5
+ediblestuff.hunger_threshold = minetest.settings:get("ediblestuff_api.hunger_threshold") or 0.5
+
 -- How much does an arbirary item satiate when equipped?
 -- This is only needed because calling on_use is much more expensive and might have side effects
 ediblestuff.satiates = {}
+
 ediblestuff.make_thing_edible = function(item,amount)
 	minetest.override_item(item, {
 		on_use=minetest.item_eat(amount)
@@ -175,8 +182,9 @@ ediblestuff.edible_while_wearing = {}
 if minetest.get_modpath("3d_armor") == nil then return end
 -- check if they have the armor equipped.
 local function armor_search(elms)
+	local eww = ediblestuff.edible_while_wearing
 	for _,elm in pairs(elms) do
-		if ediblestuff.edible_while_wearing[elm] then
+		if eww[elm] then
 			return true
 		end
 	end
@@ -188,8 +196,13 @@ local function delayed_armor_check(pname)
 		-- this can fail inside register_on_joinplayer.
 		local elms=armor:get_weared_armor_elements(player)
 		if elms == nil then
-			-- If it does fail, wait another second (it's possible to get into an infinite loop here...)
-			minetest.log("info", "ediblestuff: armor check was delayed...")
+			-- Prevent log flooding
+			if ediblestuff.logcount > ediblestuff.logdelay then
+				-- If it does fail, wait another second (it's possible to get into an infinite loop here...)
+				minetest.log("info", "ediblestuff: armor check was delayed...")
+				ediblestuff.logcount = 0
+			end
+			ediblestuff.logcount = ediblestuff.logcount + 1
 			minetest.after(1, delayed_armor_check(pname))
 			return
 		end
@@ -213,6 +226,7 @@ minetest.register_on_leaveplayer(function(player)
 end)
 minetest.register_globalstep(function()
 	-- Instead of iterating over every player, only iterate over players we know have ediblestuff equipped
+	local satiates = ediblestuff.satiates
 	for pname,_ in pairs(ediblestuff.equipped) do
 		local player=minetest.get_player_by_name(pname)
 		local n, armor_inv = armor:get_valid_player(player,"[ediblestuff register_globalstep]")
@@ -222,12 +236,12 @@ minetest.register_globalstep(function()
 			local hunger_max = ediblestuff.get_max_hunger(player)
 			local hunger_availabile = hunger_max - ediblestuff.get_hunger(player)
 			local hunger_ratio = hunger_availabile/hunger_max
-			if hunger_ratio >= .15 then -- TODO make this a setting
+			if hunger_ratio >= ediblestuff.hunger_threshold then
 				local inv_list = armor_inv:get_list("armor")
 				local list = {}
 				for i,slot in ipairs(inv_list) do
 					-- Ensure that the armor can actually be eaten before we try to eat it.
-					if slot:get_count() > 0 and ediblestuff.satiates[slot:get_name()] then
+					if slot:get_count() > 0 and satiates[slot:get_name()] then
 						list[#list+1] = {slot, i}
 					end
 				end
@@ -244,7 +258,7 @@ minetest.register_globalstep(function()
 				local possible_satiation = math.min(hunger_ratio,durability_ratio*item_ratio)
 				ediblestuff.alter_hunger(player,possible_satiation*item_satiates)
 				armor:damage(player,index,victim_armor,possible_satiation*armor_max)
-				minetest.chat_send_player(pname,"You ate "..math.ceil(possible_satiation*100).."% of your equipped "..victim_armor:get_short_description())
+				minetest.chat_send_player(pname,S("You ate @1% of your equipped @2", math.ceil(possible_satiation*100), victim_armor:get_short_description()))
 				if hunger_ratio >= durability_ratio then
 					local old_armor=ItemStack(victim_armor)
 					victim_armor:take_item()
